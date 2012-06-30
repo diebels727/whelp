@@ -6,7 +6,7 @@ module Whelp
     class Query
 
       class << self
-        ['term','location'].each do |method|
+        ['term','location','limit'].each do |method|
           define_method method do |val|
             @query << "#{method}=#{val}"
           end
