@@ -62,14 +62,22 @@ describe Whelp::Adapters::Yelp do
     end
   end
 
-  it 'parses results as json' do
-    mock_results = double
-    mock_results.stub(:body).and_return(mock_results)
-    mock_adapter.instance_variable_set :@results,mock_results
-
-    JSON.should_receive(:parse).with(mock_results)
-
+  it 'creates results' do
+    Whelp::Adapters::Result.should_receive(:new)
     mock_adapter.results
+  end
+
+end
+
+describe Whelp::Adapters::Result do
+
+  it 'parses content with JSON' do
+    body = double
+    subject.stub(:body).and_return(body)
+
+    JSON.should_receive(:parse).with(body)
+
+    subject.all
   end
 
   it 'instantiates results' do
@@ -92,57 +100,24 @@ describe Whelp::Adapters::Yelp do
       [{
         "is_claimed"=>false,
         "rating"=>3.5,
-        "mobile_url"=>"http://m.yelp.com/biz/rice-paper-falls-church",
-        "rating_img_url"=>
-         "http://media3.ak.yelpcdn.com/static/201206261235323114/img/ico/stars/stars_3_half.png",
-        "review_count"=>70,
-        "name"=>"Rice Paper",
-        "snippet_image_url"=>
-         "http://s3-media1.ak.yelpcdn.com/photo/7QMsdHHg7FuEZCkwoq5tSw/ms.jpg",
-        "rating_img_url_small"=>
-         "http://media3.ak.yelpcdn.com/static/201206263952475669/img/ico/stars/stars_small_3_half.png",
-        "url"=>"http://www.yelp.com/biz/rice-paper-falls-church",
-        "phone"=>"7035383888",
-        "snippet_text"=>
-         "We went for a late lunch - which is probably the only time you can go there without waiting in line. \n\nThe food was very good and the service friendly and...",
-        "image_url"=>
-         "http://s3-media2.ak.yelpcdn.com/bphoto/0cCJy061YzV77J0k9BmwOw/ms.jpg",
-        "categories"=>[["Vietnamese", "vietnamese"]],
-        "display_phone"=>"+1-703-538-3888",
-        "rating_img_url_large"=>
-         "http://media1.ak.yelpcdn.com/static/201206261161255655/img/ico/stars/stars_large_3_half.png",
+        "mobile_url"=>"http://business",
          "review_count"=>70,
-             "name"=>"Rice Paper",
-             "snippet_image_url"=>
-              "http://s3-media1.ak.yelpcdn.com/photo/7QMsdHHg7FuEZCkwoq5tSw/ms.jpg",
-             "rating_img_url_small"=>
-              "http://media3.ak.yelpcdn.com/static/201206263952475669/img/ico/stars/stars_small_3_half.png",
-             "url"=>"http://www.yelp.com/biz/rice-paper-falls-church",
-             "phone"=>"7035383888",
-             "snippet_text"=>
-              "We went for a late lunch - which is probably the only time you can go there without waiting in line. \n\nThe food was very good and the service friendly and...",
-             "image_url"=>
-              "http://s3-media2.ak.yelpcdn.com/bphoto/0cCJy061YzV77J0k9BmwOw/ms.jpg",
-             "categories"=>[["Vietnamese", "vietnamese"]],
-             "display_phone"=>"+1-703-538-3888",
-             "rating_img_url_large"=>
-              "http://media1.ak.yelpcdn.com/static/201206261161255655/img/ico/stars/stars_large_3_half.png",
-             "id"=>"rice-paper-falls-church",
-             "is_closed"=>false,
+             "name"=>"Business",
              "location"=>
               {
-               "city"=>"Falls Church",
+               "city"=>"City",
                "display_address"=>["6775 Wilson Blvd", "Falls Church, VA 22044"],
-               "geo_accuracy"=>8,
-               "postal_code"=>"22044",
-               "country_code"=>"US",
                "address"=>["6775 Wilson Blvd"],
-               "coordinate"=>{"latitude"=>38.872902, "longitude"=>-77.1532816},
-               "state_code"=>"VA"
+               "coordinate"=>
+                {
+                  "latitude"=>38.872902,
+                  "longitude"=>-77.1532816
+                },
                }
       }]
     }
 
   end
+
 
 end

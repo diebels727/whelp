@@ -23,6 +23,53 @@ module Whelp
 
     end
 
+    class NullObject
+
+      def stubs
+        [:body]
+      end
+
+      [:nil?,:blank?,:empty?].each do |method|
+        define_method(method) { true }
+      end
+
+      [:present?,:any?].each do |method|
+        define_method(method) { false }
+      end
+
+      def method_missing(*args,&block)
+        stubs.include?(args.first) && return
+        super
+      end
+
+    end
+
+    class Result
+      attr_reader :body,:content
+
+      def initialize( content=nil )
+        @content ||= content || NullObject.new
+        @body    ||= @content.body
+      end
+
+      def all
+        @all ||= JSON.parse( body )
+      end
+
+      def instantiate!
+
+        #region = results['region']
+
+        #define keys as constants
+        #separate metadata
+        #instantiate businesses, e.g. results.businesses returns [ business, business, business ]
+
+        #instantiated results are results.region, results.total (just an integer), results.businesses
+
+      end
+
+    end
+
     class Yelp
       def initialize(*args)
         @block_of_caller = args.last
@@ -55,25 +102,11 @@ module Whelp
 
       def search(*args,&block)
         query = block_given? ? Query.build(&block) : args.first || ''
-        binding.pry
-        @results = access_token.get( path << query )
+        @content = access_token.get( path << query )
       end
 
       def results
-        @results_body ||= @results.body
-        @results = JSON.parse( @results_body )
-      end
-
-      def instantiate_results
-
-        region = results['region']
-
-        #define keys as constants
-        #separate metadata
-        #instantiate businesses, e.g. results.businesses returns [ business, business, business ]
-
-        #instantiated results are results.region, results.total (just an integer), results.businesses
-
+        @results ||= Result.new(@content)
       end
 
     end
