@@ -1,15 +1,20 @@
 PATH
   remote: .
   specs:
-    whelp (0.0.1)
+    whelp (0.0.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (3.2.5)
+      i18n (~> 0.6)
+      multi_json (~> 1.0)
     coderay (1.0.6)
     diff-lcs (1.1.3)
+    i18n (0.6.0)
     json (1.7.3)
     method_source (0.7.1)
+    multi_json (1.3.6)
     oauth (0.4.6)
     pry (0.9.9.6)
       coderay (~> 1.0.5)
@@ -29,6 +34,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   json
   oauth
   pry
