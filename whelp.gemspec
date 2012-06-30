@@ -4,8 +4,8 @@ require File.expand_path('../lib/whelp/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["diebels727"]
   gem.email         = ["diebelsalternative@hotmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{A generalized business interface for you and your gems.}
+  gem.summary       = %q{An extensible, adapter-based, interface to business-search providers.  Currently supports Yelp API v2. }
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
