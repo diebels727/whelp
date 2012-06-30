@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["diebels727"]
   gem.email         = ["diebelsalternative@hotmail.com"]
   gem.description   = %q{A generalized business interface for you and your gems.}
-  gem.summary       = %q{An extensible, adapter-based, interface to business-search providers.  Currently supports Yelp API v2. }
+  gem.summary       = %q{An extensible, adapter-based, interface to business-search providers.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
