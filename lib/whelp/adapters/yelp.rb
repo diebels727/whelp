@@ -58,8 +58,8 @@ module Whelp
       end
 
       def results
-        results_body ||= @results.body
-        @results = JSON.parse( results_body )
+        @results_body ||= @results.body
+        @results = JSON.parse( @results_body )
       end
 
     end
