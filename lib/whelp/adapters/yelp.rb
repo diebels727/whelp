@@ -3,6 +3,40 @@ require 'json'
 require 'active_support/core_ext'
 
 module Whelp
+  module Utilities
+    class Kernel
+      def self.const_exists?( name )
+        const_get( name.capitalize )
+        true
+      rescue
+        false
+      end
+    end
+
+
+    class ClassFactory
+
+      def self.create(*args,&block)
+        name = args.shift || ''
+        name = name.to_s
+        attribute_pairs = args.pop || {}
+        attributes = attribute_pairs.keys
+        attributes = attributes.map &:to_sym
+        values     = attribute_pairs.values
+
+        if !Kernel.const_exists?(name)
+          Object.const_set(name.capitalize,Struct.new(*attributes))
+        end
+
+        object = Kernel.const_get name.capitalize
+
+        object.new *values
+      end
+
+    end
+
+  end
+
   module Adapters
     class Query
 
@@ -45,7 +79,9 @@ module Whelp
     end
 
     class Result
-      attr_reader :body,:content
+      include Utilities
+
+      attr_reader :body,:content,:region,:total,:businesses
 
       def initialize( content=nil )
         @content ||= content || NullObject.new
@@ -56,16 +92,10 @@ module Whelp
         @all ||= JSON.parse( body )
       end
 
-      def instantiate!
-
-        #region = results['region']
-
-        #define keys as constants
-        #separate metadata
-        #instantiate businesses, e.g. results.businesses returns [ business, business, business ]
-
-        #instantiated results are results.region, results.total (just an integer), results.businesses
-
+      def instantiate_results!
+        @region = ClassFactory.create 'region',all['region']
+        @total  = all['total']
+        @businesses = all['businesses'].map { |business| ClassFactory.create 'business',business }
       end
 
     end
