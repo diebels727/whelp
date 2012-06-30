@@ -35,6 +35,27 @@ module Whelp
 
     end
 
+    class NullObject
+
+      def stubs
+        [:body]
+      end
+
+      [:nil?,:blank?,:empty?].each do |method|
+        define_method(method) { true }
+      end
+
+      [:present?,:any?].each do |method|
+        define_method(method) { false }
+      end
+
+      def method_missing(*args,&block)
+        stubs.include?(args.first) && return
+        super
+      end
+
+    end
+
   end
 
   module Adapters
@@ -53,27 +74,6 @@ module Whelp
         instance_eval &block
         @query = @query.join('&')
         @query.gsub!(' ','%20')
-      end
-
-    end
-
-    class NullObject
-
-      def stubs
-        [:body]
-      end
-
-      [:nil?,:blank?,:empty?].each do |method|
-        define_method(method) { true }
-      end
-
-      [:present?,:any?].each do |method|
-        define_method(method) { false }
-      end
-
-      def method_missing(*args,&block)
-        stubs.include?(args.first) && return
-        super
       end
 
     end
