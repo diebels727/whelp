@@ -92,7 +92,7 @@ module Whelp
         @all ||= JSON.parse( body )
       end
 
-      def instantiate_results!
+      def instantiate!
         @region = ClassFactory.create 'region',all['region']
         @total  = all['total']
         @businesses = all['businesses'].map { |business| ClassFactory.create 'business',business }

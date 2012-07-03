@@ -120,7 +120,7 @@ describe Whelp::Adapters::Result do
       }
 
       subject.stub(:all).and_return(all)
-      subject.instantiate_results!
+      subject.instantiate!
     end
 
     it 'totals results' do
