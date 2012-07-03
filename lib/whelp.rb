@@ -1,14 +1,6 @@
 require "whelp/version"
 require 'whelp/adapters'
 
-class Array
-
-  def extract_options!
-    pop if last.is_a? Hash
-  end
-
-end
-
 module Whelp
 
   def self.included(*args)
@@ -23,6 +15,10 @@ module Whelp
     def whelpable(adapter,&block)
       include InstanceMethods
       @adapter = Adapter.build adapter,block
+    end
+
+    def whelpable?
+      true
     end
 
   end
@@ -51,6 +47,7 @@ module Whelp
 
 end
 
+#Need to extend via Railtie
 class Object
   include Whelp
 
