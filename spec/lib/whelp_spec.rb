@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'whelp'
 
 class MockObject
+  include Whelp
 
   whelpable :yelp do
     version 2
@@ -28,10 +29,10 @@ describe Whelp do
     adapter.configuration.should == { :options => 1 }
   end
 
-  it 'delegates search to the adapter' do
+  it 'delegates whelp_for to the adapter' do
     adapter = mock_object.adapter
     adapter.should_receive :search
-    mock_object.search
+    mock_object.whelp_for
   end
 
   it 'delegates results to the adapter' do

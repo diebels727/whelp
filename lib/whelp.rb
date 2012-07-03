@@ -1,5 +1,6 @@
 require "whelp/version"
 require 'whelp/adapters'
+require 'whelp/railtie' if defined?(Rails)
 
 module Whelp
 
@@ -15,10 +16,9 @@ module Whelp
     def whelpable(adapter,&block)
       include InstanceMethods
       @adapter = Adapter.build adapter,block
-    end
-
-    def whelpable?
-      true
+      class << self
+        define_method(:whelpable?) { true }
+      end
     end
 
   end
@@ -29,7 +29,7 @@ module Whelp
       @adapter ||= self.class.adapter
     end
 
-    def search(*args,&block)
+    def whelp_for(*args,&block)
       adapter.search(*args,&block)
     end
 
@@ -38,21 +38,12 @@ module Whelp
     end
 
     def whelpable?
-      true
+      self.class.whelpable?
     end
 
   end
 
-
-
 end
 
-#Need to extend via Railtie
-class Object
-  include Whelp
 
-  def whelpable?
-    false
-  end
 
-end
