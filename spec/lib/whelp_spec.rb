@@ -49,7 +49,7 @@ describe Whelp::Adapters::Yelp do
     Whelp::Adapter.build :yelp,proc
   end
 
-  it 'searches with a custom query' do
+  it 'searches with a string' do
     mock_adapter.access_token.should_receive(:get)
     mock_adapter.search("query")
   end
